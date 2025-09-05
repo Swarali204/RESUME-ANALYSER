@@ -1,0 +1,60 @@
+JOHN DOE
+Software Engineer
+john.doe@email.com | (555) 123-4567 | linkedin.com/in/johndoe
+
+PROFESSIONAL SUMMARY
+Experienced Software Engineer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud technologies. Proven track record of delivering scalable applications and leading development teams.
+
+TECHNICAL SKILLS
+Programming Languages: JavaScript, Python, Java, TypeScript
+Frontend: React, Angular, Vue.js, HTML5, CSS3, Bootstrap
+Backend: Node.js, Express.js, Django, Spring Boot
+Databases: MongoDB, PostgreSQL, MySQL, Redis
+Cloud & DevOps: AWS, Docker, Kubernetes, CI/CD, Git
+Tools: VS Code, Postman, Jira, Slack
+
+PROFESSIONAL EXPERIENCE
+
+Senior Software Engineer | TechCorp Inc. | 2022 - Present
+• Led development of microservices architecture serving 100K+ users
+• Implemented CI/CD pipelines reducing deployment time by 60%
+• Mentored 3 junior developers and conducted code reviews
+• Technologies: React, Node.js, AWS, Docker, MongoDB
+
+Software Developer | StartupXYZ | 2020 - 2022
+• Built RESTful APIs and frontend applications using React and Node.js
+• Collaborated with product team to implement new features
+• Optimized database queries improving performance by 40%
+• Technologies: JavaScript, React, Node.js, PostgreSQL
+
+Junior Developer | WebSolutions | 2019 - 2020
+• Developed responsive web applications using modern frameworks
+• Participated in agile development processes
+• Fixed bugs and implemented minor features
+• Technologies: HTML, CSS, JavaScript, PHP
+
+PROJECTS
+E-Commerce Platform | React, Node.js, MongoDB
+• Built full-stack e-commerce application with payment integration
+• Implemented user authentication and admin dashboard
+• Deployed on AWS with Docker containers
+
+Task Management App | React, Express.js, PostgreSQL
+• Created collaborative task management tool
+• Real-time updates using WebSocket
+• User role management and permissions
+
+EDUCATION
+Bachelor of Science in Computer Science
+University of Technology | 2015 - 2019
+GPA: 3.8/4.0
+
+CERTIFICATIONS
+• AWS Certified Developer Associate
+• MongoDB Certified Developer
+• React Developer Certification
+
+ACHIEVEMENTS
+• Employee of the Year 2023 at TechCorp Inc.
+• Led team that won company hackathon
+• Published 2 technical articles on Medium 

@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs/%3E%3Ccircle cx='32' cy='32' r='30' fill='%23667eea'/%3E%3Ctext x='32' y='40' font-size='28' text-anchor='middle' fill='white' font-family='Arial'%3EAI%3C/text%3E%3C/svg%3E">
+    <meta name="backend-url" content="">
+    <title>AI Resume Analyzer Pro - Advanced Career Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            from { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+            to { box-shadow: 0 0 40px rgba(102, 126, 234, 0.8); }
+        }
+        
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @media (max-width: 640px) {
+            .upload-area {
+                padding: 2rem !important;
+            }
+            .text-5xl { font-size: 2rem; }
+            .text-7xl { font-size: 3rem; }
+        }
+        
+        .upload-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .upload-area:hover::before {
+            left: 100%;
+        }
+        
+        .upload-area:hover {
+            border-color: #667eea;
+            background-color: rgba(102, 126, 234, 0.05);
+        }
+        
+        .upload-area.dragover {
+            border-color: #667eea;
+            background-color: rgba(102, 126, 234, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        
+        .skill-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-size: 13px;
+            margin: 4px;
+            display: inline-block;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .skill-tag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .strength-item {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 8px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .strength-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(72, 187, 120, 0.3);
+        }
+        
+        .weakness-item {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 8px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .weakness-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(245, 101, 101, 0.3);
+        }
+        
+        .suggestion-item {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 8px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .suggestion-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(237, 137, 54, 0.3);
+        }
+        
+        .typing-effect {
+            overflow: hidden;
+            border-right: 2px solid #667eea;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #667eea; }
+        }
+        
+        .section {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        
+        .section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .ai-processing {
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #667eea);
+            background-size: 400% 400%;
+            animation: gradient-shift 2s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .particles-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .floating-icons {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .floating-icon {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        .neon-glow:hover {
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white overflow-x-hidden">
+    <!-- Particles Background -->
+    <div id="particles-js" class="particles-bg"></div>
+    
+    <!-- Floating Icons -->
+    <div class="floating-icons">
+                                <i data-feather="cpu" class="floating-icon text-indigo-400" style="top: 10%; left: 10%; font-size: 2rem;"></i>
+        <i data-feather="trending-up" class="floating-icon text-purple-400" style="top: 20%; right: 15%; font-size: 1.5rem;"></i>
+        <i data-feather="target" class="floating-icon text-pink-400" style="top: 60%; left: 5%; font-size: 1.8rem;"></i>
+        <i data-feather="zap" class="floating-icon text-blue-400" style="top: 80%; right: 10%; font-size: 1.3rem;"></i>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="glass-effect fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center neon-glow">
+                            <span class="text-white font-bold text-lg">AI</span>
+                        </div>
+                        <span class="ml-3 text-xl font-bold gradient-text">Resume Analyzer Pro</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6">
+                                        <button onclick="showSection('home')" class="nav-btn text-gray-300 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10">Home</button>
+                    <button onclick="showSection('analyzer')" class="nav-btn text-gray-300 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10">Analyzer</button>
+                    <button onclick="showSection('insights')" class="nav-btn text-gray-300 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10">Insights</button>
+                    <button onclick="showSection('about')" class="nav-btn text-gray-300 hover:text-white px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/10">About</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section active min-h-screen flex items-center justify-center relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="floating mb-8">
+                <div class="w-24 h-24 gradient-bg rounded-full flex items-center justify-center mx-auto pulse-glow">
+                                            <i data-feather="cpu" class="w-12 h-12 text-white"></i>
+                </div>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-black mb-6 gradient-text typing-effect">
+                AI-Powered Resume Intelligence
+            </h1>
+            
+            <p class="text-xl md:text-2xl mb-12 opacity-90 max-w-3xl mx-auto leading-relaxed">
+                Transform your career with advanced AI analysis, personalized insights, and professional recommendations
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <button onclick="showSection('analyzer')" class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 neon-glow">
+                    Start Free Analysis
+                </button>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid md:grid-cols-4 gap-8 mt-20">
+                <div class="text-center">
+                    <div class="text-3xl font-bold gradient-text mb-2">10K+</div>
+                    <div class="text-gray-400">Resumes Analyzed</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold gradient-text mb-2">95%</div>
+                    <div class="text-gray-400">Accuracy Rate</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold gradient-text mb-2">50+</div>
+                    <div class="text-gray-400">AI Models</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold gradient-text mb-2">24/7</div>
+                    <div class="text-gray-400">AI Processing</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analyzer Section -->
+    <section id="analyzer" class="section hidden min-h-screen py-20">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-4 gradient-text">Advanced Resume Analyzer</h2>
+            <p class="text-xl text-center mb-12 text-gray-400">Upload your resume and get instant AI-powered insights</p>
+            
+            <!-- Upload Area -->
+            <div class="glass-effect rounded-2xl p-8 mb-12">
+                <div id="uploadArea" class="upload-area rounded-xl p-16 text-center cursor-pointer">
+                    <div class="floating mb-6">
+                        <i data-feather="upload-cloud" class="w-20 h-20 text-indigo-400 mx-auto"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">Upload Your Resume</h3>
+                    <p class="text-gray-400 mb-6 text-lg">Drag and drop your resume here or click to browse</p>
+                    <p class="text-sm text-gray-500">Supports PDF, DOCX, and TXT files (max 10MB)</p>
+                    <input type="file" id="fileInput" accept=".pdf,.docx,.txt" class="hidden">
+                </div>
+            </div>
+
+            <!-- Analysis Results -->
+            <div id="analysisResults" class="hidden space-y-8">
+                <!-- Overall Score -->
+                <div class="glass-effect rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center">Overall Analysis Score</h3>
+                    <div class="flex justify-center">
+                        <div class="relative">
+                            <svg class="progress-ring w-48 h-48" viewBox="0 0 120 120">
+                                <circle class="progress-ring-circle" stroke="#374151" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+                                <circle class="progress-ring-circle" stroke="url(#gradient)" stroke-width="8" fill="transparent" r="52" cx="60" cy="60" stroke-dasharray="326.73" stroke-dashoffset="49.01"/>
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#667eea"/>
+                                        <stop offset="100%" style="stop-color:#764ba2"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-4xl font-bold gradient-text" id="overallScore">85</div>
+                                    <div class="text-gray-400">out of 100</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Analysis -->
+                <div class="glass-effect rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6">Detected Skills</h3>
+                    <div id="skillsList" class="flex flex-wrap justify-center">
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Machine Learning</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">MongoDB</span>
+                        <span class="skill-tag">GraphQL</span>
+                    </div>
+                </div>
+
+                <!-- Detailed Analysis -->
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="glass-effect rounded-2xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-green-400 flex items-center">
+                            <i data-feather="check-circle" class="w-5 h-5 mr-2"></i>
+                            Strengths
+                        </h3>
+                        <div id="strengthsList">
+                            <div class="strength-item">Strong technical skills</div>
+                            <div class="strength-item">Clear project descriptions</div>
+                            <div class="strength-item">Good formatting</div>
+                            <div class="strength-item">Relevant experience</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect rounded-2xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-red-400 flex items-center">
+                            <i data-feather="alert-circle" class="w-5 h-5 mr-2"></i>
+                            Areas for Improvement
+                        </h3>
+                        <div id="weaknessesList">
+                            <div class="weakness-item">Add quantifiable achievements</div>
+                            <div class="weakness-item">Include more keywords</div>
+                            <div class="weakness-item">Expand summary section</div>
+                            <div class="weakness-item">Add certifications</div>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect rounded-2xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-orange-400 flex items-center">
+                            <i data-feather="zap" class="w-5 h-5 mr-2"></i>
+                            AI Recommendations
+                        </h3>
+                        <div id="suggestionsList">
+                            <div class="suggestion-item">Add metrics to achievements</div>
+                            <div class="suggestion-item">Include industry keywords</div>
+                            <div class="suggestion-item">Enhance professional summary</div>
+                            <div class="suggestion-item">Add relevant certifications</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 🎯 PERSONALIZED CAREER INTELLIGENCE SECTION -->
+                <div class="glass-effect rounded-2xl p-8 mb-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center">🎯 PERSONALIZED CAREER INTELLIGENCE</h3>
+                    <div id="careerIntelligenceGrid" class="grid md:grid-cols-2 gap-8">
+                        <!-- This will be completely replaced by JavaScript -->
+                        <div class="text-center p-8">
+                            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-400 mx-auto mb-4"></div>
+                            <p class="text-gray-400">Analyzing career intelligence...</p>
+                                    </div>
+                                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Role Preferences Section -->
+    <section id="insights" class="section hidden min-h-screen py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-4 gradient-text">What Role Are You Looking For?</h2>
+            <p class="text-xl text-center mb-12 text-gray-400">Tell us about your career goals and get personalized recommendations</p>
+            
+            <!-- Role Selection Form -->
+            <div class="glass-effect rounded-2xl p-8 mb-8">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 gradient-text">Desired Role</h3>
+                        <select id="roleSelect" class="w-full p-4 bg-white/10 border border-gray-600 rounded-xl text-white mb-4 focus:outline-none focus:border-indigo-400" style="color: white;">
+                            <option value="" style="background-color: #1f2937; color: white;">Select your desired role...</option>
+                            <option value="software-engineer" style="background-color: #1f2937; color: white;">Software Engineer</option>
+                            <option value="data-scientist" style="background-color: #1f2937; color: white;">Data Scientist</option>
+                            <option value="product-manager" style="background-color: #1f2937; color: white;">Product Manager</option>
+                            <option value="devops-engineer" style="background-color: #1f2937; color: white;">DevOps Engineer</option>
+                            <option value="ui-ux-designer" style="background-color: #1f2937; color: white;">UI/UX Designer</option>
+                            <option value="project-manager" style="background-color: #1f2937; color: white;">Project Manager</option>
+                            <option value="business-analyst" style="background-color: #1f2937; color: white;">Business Analyst</option>
+                            <option value="marketing-manager" style="background-color: #1f2937; color: white;">Marketing Manager</option>
+                            <option value="sales-representative" style="background-color: #1f2937; color: white;">Sales Representative</option>
+                            <option value="hr-specialist" style="background-color: #1f2937; color: white;">HR Specialist</option>
+                        </select>
+                        </select>
+                        
+                        <div class="mb-6">
+                            <label class="block text-gray-300 mb-2">Experience Level</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center">
+                                    <input type="radio" name="experience" value="entry" class="mr-2">
+                                    <span>Entry Level</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="experience" value="mid" class="mr-2">
+                                    <span>Mid Level</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="experience" value="senior" class="mr-2">
+                                    <span>Senior Level</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button onclick="getRoleRecommendations()" class="w-full px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl text-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
+                            Get Recommendations
+                        </button>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 gradient-text">Role Information</h3>
+                        <div id="roleInfo" class="space-y-4">
+                                                    <div class="p-4 bg-white/5 rounded-xl">
+                            <h4 class="font-bold text-indigo-400 mb-2">Average Income</h4>
+                            <p class="text-gray-300">₹6,00,000 - ₹12,00,000</p>
+                        </div>
+                            <div class="p-4 bg-white/5 rounded-xl">
+                                <h4 class="font-bold text-purple-400 mb-2">Required Skills</h4>
+                                <p class="text-gray-300">JavaScript, React, Node.js, Database Design</p>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-xl">
+                                <h4 class="font-bold text-pink-400 mb-2">Growth Potential</h4>
+                                <p class="text-gray-300">High demand with excellent career progression</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recommendations Results -->
+            <div id="recommendationsResults" class="hidden">
+                <div class="glass-effect rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-6 text-center gradient-text">Your Personalized Recommendations</h3>
+                    <div id="recommendationsContent" class="grid md:grid-cols-3 gap-6">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section hidden min-h-screen py-20">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-8 gradient-text">About AI Resume Analyzer Pro</h2>
+            
+            <div class="glass-effect rounded-2xl p-8">
+                <p class="text-lg text-gray-300 mb-8 leading-relaxed">
+                    AI Resume Analyzer Pro is a cutting-edge platform that leverages advanced artificial intelligence to provide comprehensive resume analysis and career insights. Our sophisticated algorithms analyze every aspect of your resume to deliver personalized recommendations for career growth.
+                </p>
+                
+                <h3 class="text-2xl font-bold mb-6 gradient-text">Advanced Features</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i data-feather="cpu" class="w-6 h-6 text-indigo-400 mr-3"></i>
+                            <span>AI-powered resume analysis</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-feather="search" class="w-6 h-6 text-purple-400 mr-3"></i>
+                            <span>Skills gap identification</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-feather="trending-up" class="w-6 h-6 text-pink-400 mr-3"></i>
+                            <span>Career path recommendations</span>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i data-feather="target" class="w-6 h-6 text-blue-400 mr-3"></i>
+                            <span>ATS optimization</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-feather="bar-chart-2" class="w-6 h-6 text-green-400 mr-3"></i>
+                            <span>Market trend analysis</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-feather="zap" class="w-6 h-6 text-yellow-400 mr-3"></i>
+                            <span>Real-time processing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="glass-effect py-8 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-gray-400">&copy; 2024 AI Resume Analyzer Pro. Built with ❤️ for career success.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+
+        // Initialize Particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: '#667eea' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#667eea',
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                }
+            },
+            retina_detect: true
+        });
+
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.remove('hidden');
+            
+            // Animate in
+            setTimeout(() => {
+                targetSection.classList.add('active');
+            }, 100);
+            
+            // Update active nav button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-white', 'bg-white/10');
+                btn.classList.add('text-gray-300');
+            });
+            
+            event.target.classList.remove('text-gray-300');
+            event.target.classList.add('text-white', 'bg-white/10');
+        }
+
+        // File upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const analysisResults = document.getElementById('analysisResults');
+
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        async function handleFile(file) {
+            console.log('🚀 handleFile function called with:', file.name, file.type, file.size);
+            // Show AI processing animation
+            uploadArea.innerHTML = `
+                <div class="ai-processing rounded-full w-20 h-20 mx-auto mb-6"></div>
+                <h3 class="text-2xl font-bold mb-4">AI Processing...</h3>
+                <p class="text-gray-400 mb-6">Analyzing your resume with advanced AI algorithms</p>
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                    <div class="ai-processing h-2 rounded-full" style="width: 0%"></div>
+                </div>
+            `;
+
+            // Animate progress bar
+            let progress = 0;
+            const progressBar = uploadArea.querySelector('.ai-processing');
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 90) {
+                    progress = 90;
+                    clearInterval(interval);
+                }
+                progressBar.style.width = progress + '%';
+            }, 200);
+
+            try {
+                console.log('Starting file upload...');
+                console.log('File:', file.name, 'Size:', file.size);
+                
+                // Create FormData for file upload
+                const formData = new FormData();
+                formData.append('file', file);
+
+                console.log('Sending request to backend...');
+                // Resolve backend origin
+                const metaBackend = document.querySelector('meta[name="backend-url"]')?.content?.trim();
+                let backendOrigin = '';
+                if (metaBackend) {
+                    backendOrigin = metaBackend;
+                } else {
+                    const port = window.location.port;
+                    if (!port || port === '5000') {
+                        // Hosted together or opened directly on backend
+                        backendOrigin = window.location.origin;
+                    } else {
+                        // Likely running static site on 8000 and backend on 5000 (local dev)
+                        backendOrigin = `${window.location.protocol}//${window.location.hostname}:5000`;
+                    }
+                }
+
+                // Helper to POST once
+                async function postOnce(origin) {
+                    return fetch(`${origin}/analyze`, {
+                        method: 'POST',
+                        body: formData,
+                        mode: 'cors',
+                        headers: { 'Accept': 'application/json' }
+                    });
+                }
+
+                // Attempt 1
+                let response = await postOnce(backendOrigin);
+
+                // If first try fails, attempt fallback (swap origins) only when meta not set
+                if ((!response.ok || response.status === 404 || response.status === 405) && !metaBackend) {
+                    const altOrigin = backendOrigin === window.location.origin
+                        ? `${window.location.protocol}//${window.location.hostname}:5000`
+                        : window.location.origin;
+                    console.log('Primary call failed, trying fallback origin:', altOrigin);
+                    try { response = await postOnce(altOrigin); } catch (e) { /* swallow */ }
+                }
+
+                console.log('Response received:', response.status, response.statusText);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.log('Error response:', errorText);
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+                }
+
+                console.log('📄 About to parse JSON response...');
+                const result = await response.json();
+                console.log('📄 JSON parsed successfully:', result);
+                
+                console.log('🎯 FINAL SOLUTION - Received result:', result);
+                console.log('🎯 Career Intelligence data:', result.career_intelligence);
+                console.log('🎯 Career Intelligence keys:', Object.keys(result.career_intelligence || {}));
+                console.log('🎯 Experience Level:', result.career_intelligence?.experience_level);
+                console.log('🎯 Industry Trends:', result.career_intelligence?.industry_trends);
+
+                // Complete progress bar
+                progressBar.style.width = '100%';
+
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+
+                // Show real AI results
+                setTimeout(() => showRealAnalysisResults(result), 500);
+
+            } catch (error) {
+                console.error('Error:', error);
+                uploadArea.innerHTML = `
+                    <div class="floating mb-6">
+                        <i data-feather="alert-circle" class="w-20 h-20 text-red-500 mx-auto"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-red-500">Analysis Failed</h3>
+                    <p class="text-gray-400 mb-6">${error.message}</p>
+                    <button onclick="resetUpload()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
+                        Try Again
+                    </button>
+                `;
+                feather.replace();
+            }
+        }
+
+        function showRealAnalysisResults(result) {
+            analysisResults.classList.remove('hidden');
+            
+            // Update the overall score
+            const overallScore = document.getElementById('overallScore');
+            if (overallScore) {
+                overallScore.textContent = result.score || 'N/A';
+            }
+            
+            // Update skills list
+            const skillsList = document.getElementById('skillsList');
+            if (skillsList && result.skills) {
+                skillsList.innerHTML = '';
+                result.skills.forEach(skill => {
+                    const skillTag = document.createElement('span');
+                    skillTag.className = 'skill-tag';
+                    skillTag.textContent = skill;
+                    skillsList.appendChild(skillTag);
+                });
+            }
+            
+            // Update strengths list
+            const strengthsList = document.getElementById('strengthsList');
+            if (strengthsList && result.strengths) {
+                strengthsList.innerHTML = '';
+                result.strengths.forEach(strength => {
+                    const strengthItem = document.createElement('div');
+                    strengthItem.className = 'strength-item';
+                    strengthItem.textContent = strength;
+                    strengthsList.appendChild(strengthItem);
+                });
+            }
+            
+            // Update weaknesses list
+            const weaknessesList = document.getElementById('weaknessesList');
+            if (weaknessesList && result.improvements) {
+                weaknessesList.innerHTML = '';
+                result.improvements.forEach(improvement => {
+                    const weaknessItem = document.createElement('div');
+                    weaknessItem.className = 'weakness-item';
+                    weaknessItem.textContent = improvement;
+                    weaknessesList.appendChild(weaknessItem);
+                });
+            }
+            
+            // Update suggestions list
+            const suggestionsList = document.getElementById('suggestionsList');
+            if (suggestionsList && result.recommendations) {
+                suggestionsList.innerHTML = '';
+                result.recommendations.forEach(rec => {
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.className = 'suggestion-item';
+                    suggestionItem.textContent = rec;
+                    suggestionsList.appendChild(suggestionItem);
+                });
+            }
+            
+            // Update Career Intelligence Section
+            console.log('🔍 About to update career intelligence with:', result.career_intelligence);
+            console.log('🔍 Full result object keys:', Object.keys(result));
+            console.log('🔍 Career intelligence type:', typeof result.career_intelligence);
+            console.log('🔍 Career intelligence keys:', result.career_intelligence ? Object.keys(result.career_intelligence) : 'null');
+            
+            // Update Dynamic Career Path Section
+            updateDynamicCareerPath(result.career_intelligence);
+            
+            // Force update career intelligence with test data if function fails
+            try {
+                updateCareerIntelligence(result.career_intelligence);
+            } catch (error) {
+                console.error('❌ Error updating career intelligence:', error);
+                // Force display some data
+                const careerGrid = document.getElementById('careerIntelligenceGrid');
+                if (careerGrid) {
+                    careerGrid.innerHTML = `
+                        <div class="p-6 bg-white/5 rounded-xl">
+                            <h4 class="font-bold mb-4 text-lg flex items-center">
+                                <i data-feather="alert-triangle" class="w-5 h-5 text-red-400 mr-2"></i>
+                                Career Intelligence (Debug)
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="text-sm text-red-400">Error: ${error.message}</div>
+                                <div class="text-sm">Data received: ${JSON.stringify(result.career_intelligence)}</div>
+                            </div>
+                        </div>
+                    `;
+                    feather.replace();
+                }
+            }
+            
+            // Force clear any cached content and ensure fresh display
+            setTimeout(() => {
+                const careerGrid = document.getElementById('careerIntelligenceGrid');
+                if (careerGrid && careerGrid.innerHTML.includes('Analyzing career intelligence')) {
+                    console.log('🔄 Force refreshing career intelligence display...');
+                    updateCareerIntelligence(result.career_intelligence);
+                }
+                
+                // 🎯 FINAL SOLUTION: Force display if still not working
+                setTimeout(() => {
+                    if (result.career_intelligence) {
+                        console.log('🎯 FINAL SOLUTION ACTIVATED!');
+                        
+                        // Find the career intelligence section and completely replace it
+                        const careerIntelligenceSection = document.querySelector('.glass-effect.rounded-2xl.p-8 h3');
+                        if (careerIntelligenceSection && careerIntelligenceSection.textContent.includes('Career Intelligence')) {
+                            const parentDiv = careerIntelligenceSection.closest('.glass-effect.rounded-2xl.p-8');
+                            if (parentDiv) {
+                                console.log('🎯 Found career intelligence section, replacing completely...');
+                                
+                                // Create completely new HTML
+                                let newHTML = `
+                                    <h3 class="text-2xl font-bold mb-6 text-center">🎯 PERSONALIZED CAREER INTELLIGENCE</h3>
+                                    <div class="grid md:grid-cols-2 gap-8">
+                                `;
+                                
+                                // Experience Level
+                                if (result.career_intelligence.experience_level) {
+                                    newHTML += `
+                                        <div class="p-6 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-xl border-2 border-indigo-500 shadow-lg">
+                                            <h4 class="font-bold mb-4 text-lg flex items-center text-indigo-300">
+                                                <i data-feather="clock" class="w-5 h-5 text-indigo-400 mr-2"></i>
+                                                Experience Level
+                                            </h4>
+                                            <div class="text-4xl font-bold text-indigo-300 mb-2">${result.career_intelligence.experience_level}</div>
+                                            <div class="text-gray-400 text-sm">Based on your resume analysis</div>
+                                        </div>
+                                    `;
+                                }
+                                
+                                // Industry Trends
+                                if (result.career_intelligence.industry_trends && result.career_intelligence.industry_trends.length > 0) {
+                                    newHTML += `
+                                        <div class="p-6 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl border-2 border-green-500 shadow-lg">
+                                            <h4 class="font-bold mb-4 text-lg flex items-center text-green-300">
+                                                <i data-feather="trending-up" class="w-5 h-5 text-green-400 mr-2"></i>
+                                                Industry Trends
+                                            </h4>
+                                            <div class="space-y-3">
+                                                ${result.career_intelligence.industry_trends.map(trend => `
+                                                    <div class="flex items-start p-3 bg-white/10 rounded-lg border border-green-500/30">
+                                                        <i data-feather="arrow-right" class="w-4 h-4 text-green-400 mr-3 mt-1 flex-shrink-0"></i>
+                                                        <div class="text-sm text-gray-300">${trend}</div>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                                
+                                // Market Insights
+                                if (result.career_intelligence.market_insights && result.career_intelligence.market_insights.length > 0) {
+                                    newHTML += `
+                                        <div class="p-6 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl border-2 border-blue-500 shadow-lg">
+                                            <h4 class="font-bold mb-4 text-lg flex items-center text-blue-300">
+                                                <i data-feather="bar-chart-2" class="w-5 h-5 text-blue-400 mr-2"></i>
+                                                Market Insights
+                                            </h4>
+                                            <div class="space-y-3">
+                                                ${result.career_intelligence.market_insights.map(insight => `
+                                                    <div class="flex items-start p-3 bg-white/10 rounded-lg border border-blue-500/30">
+                                                        <i data-feather="info" class="w-4 h-4 text-blue-400 mr-3 mt-1 flex-shrink-0"></i>
+                                                        <div class="text-sm text-gray-300">${insight}</div>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                                
+                                // Career Path
+                                if (result.career_intelligence.career_path && result.career_intelligence.career_path.length > 0) {
+                                    newHTML += `
+                                        <div class="p-6 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl border-2 border-purple-500 shadow-lg">
+                                            <h4 class="font-bold mb-4 text-lg flex items-center text-purple-300">
+                                                <i data-feather="target" class="w-5 h-5 text-purple-400 mr-2"></i>
+                                                Career Path
+                                            </h4>
+                                            <div class="space-y-3">
+                                                ${result.career_intelligence.career_path.map(path => `
+                                                    <div class="flex items-start p-3 bg-white/10 rounded-lg border border-purple-500/30">
+                                                        <i data-feather="arrow-right" class="w-4 h-4 text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                                                        <div class="text-sm text-gray-300">${path}</div>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                                
+                                // Skill Gaps
+                                if (result.career_intelligence.skill_gaps && result.career_intelligence.skill_gaps.length > 0) {
+                                    newHTML += `
+                                        <div class="p-6 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl border-2 border-yellow-500 shadow-lg">
+                                            <h4 class="font-bold mb-4 text-lg flex items-center text-yellow-300">
+                                                <i data-feather="alert-triangle" class="w-5 h-5 text-yellow-400 mr-2"></i>
+                                                Skill Gaps
+                                            </h4>
+                                            <div class="space-y-3">
+                                                ${result.career_intelligence.skill_gaps.map(gap => `
+                                                    <div class="flex items-start p-3 bg-white/10 rounded-lg border border-yellow-500/30">
+                                                        <i data-feather="minus-circle" class="w-4 h-4 text-yellow-400 mr-3 mt-1 flex-shrink-0"></i>
+                                                        <div class="text-sm text-gray-300">${gap}</div>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                                
+                                // Salary Insights
+                                if (result.career_intelligence.salary_insights && result.career_intelligence.salary_insights.length > 0) {
+                                    newHTML += `
+                                        <div class="p-6 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-xl border-2 border-emerald-500 shadow-lg">
+                                            <h4 class="font-bold mb-4 text-lg flex items-center text-emerald-300">
+                                                <i data-feather="dollar-sign" class="w-5 h-5 text-emerald-400 mr-2"></i>
+                                                Salary Insights
+                                            </h4>
+                                            <div class="space-y-3">
+                                                ${result.career_intelligence.salary_insights.map(insight => `
+                                                    <div class="flex items-start p-3 bg-white/10 rounded-lg border border-emerald-500/30">
+                                                        <i data-feather="trending-up" class="w-4 h-4 text-emerald-400 mr-3 mt-1 flex-shrink-0"></i>
+                                                        <div class="text-sm text-gray-300">${insight}</div>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    `;
+                                }
+                                
+                                newHTML += '</div>';
+                                
+                                // Replace the entire section
+                                parentDiv.innerHTML = newHTML;
+                                feather.replace();
+                                
+                                // Add a success indicator
+                                const successDiv = document.createElement('div');
+                                successDiv.style.position = 'fixed';
+                                successDiv.style.top = '20px';
+                                successDiv.style.right = '20px';
+                                successDiv.style.background = 'linear-gradient(45deg, #10b981, #059669)';
+                                successDiv.style.color = 'white';
+                                successDiv.style.padding = '15px 20px';
+                                successDiv.style.borderRadius = '10px';
+                                successDiv.style.fontSize = '16px';
+                                successDiv.style.fontWeight = 'bold';
+                                successDiv.style.zIndex = '10000';
+                                successDiv.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+                                successDiv.innerHTML = '✅ CAREER INTELLIGENCE UPDATED!';
+                                document.body.appendChild(successDiv);
+                                
+                                setTimeout(() => {
+                                    if (successDiv.parentNode) {
+                                        successDiv.parentNode.removeChild(successDiv);
+                                    }
+                                }, 5000);
+                                console.log('🎯 FINAL SOLUTION completed successfully!');
+                            }
+                        } else {
+                            console.log('❌ Could not find career intelligence section');
+                        }
+                    }
+                }, 2000);
+            }, 100);
+            
+            // 🎯 FINAL SOLUTION: Replace the entire career intelligence section with new content
+            if (result.career_intelligence) {
+                console.log('🎯 FINAL SOLUTION ACTIVATED!');
+                
+                // Find the career intelligence section and completely replace it
+                const careerIntelligenceSection = document.querySelector('.glass-effect.rounded-2xl.p-8 h3');
+                if (careerIntelligenceSection && careerIntelligenceSection.textContent.includes('Career Intelligence')) {
+                    const parentDiv = careerIntelligenceSection.closest('.glass-effect.rounded-2xl.p-8');
+                    if (parentDiv) {
+                        console.log('🎯 Found career intelligence section, replacing completely...');
+                        
+                        // Create completely new HTML
+                        let newHTML = `
+                            <h3 class="text-2xl font-bold mb-6 text-center">🎯 PERSONALIZED CAREER INTELLIGENCE</h3>
+                            <div class="grid md:grid-cols-2 gap-8">
+                        `;
+                        
+                        // Experience Level
+                        if (result.career_intelligence.experience_level) {
+                            newHTML += `
+                                <div class="p-6 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-xl border-2 border-indigo-500 shadow-lg">
+                                    <h4 class="font-bold mb-4 text-lg flex items-center text-indigo-300">
+                                        <i data-feather="clock" class="w-5 h-5 text-indigo-400 mr-2"></i>
+                                        Experience Level
+                                    </h4>
+                                    <div class="text-4xl font-bold text-indigo-300 mb-2">${result.career_intelligence.experience_level}</div>
+                                    <div class="text-gray-400 text-sm">Based on your resume analysis</div>
+                                </div>
+                            `;
+                        }
+                        
+                        // Industry Trends
+                        if (result.career_intelligence.industry_trends && result.career_intelligence.industry_trends.length > 0) {
+                            newHTML += `
+                                <div class="p-6 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-xl border-2 border-green-500 shadow-lg">
+                                    <h4 class="font-bold mb-4 text-lg flex items-center text-green-300">
+                                        <i data-feather="trending-up" class="w-5 h-5 text-green-400 mr-2"></i>
+                                        Industry Trends
+                                    </h4>
+                                    <div class="space-y-3">
+                                        ${result.career_intelligence.industry_trends.map(trend => `
+                                            <div class="flex items-start p-3 bg-white/10 rounded-lg border border-green-500/30">
+                                                <i data-feather="arrow-right" class="w-4 h-4 text-green-400 mr-3 mt-1 flex-shrink-0"></i>
+                                                <div class="text-sm text-gray-300">${trend}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        
+                        // Market Insights
+                        if (result.career_intelligence.market_insights && result.career_intelligence.market_insights.length > 0) {
+                            newHTML += `
+                                <div class="p-6 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl border-2 border-blue-500 shadow-lg">
+                                    <h4 class="font-bold mb-4 text-lg flex items-center text-blue-300">
+                                        <i data-feather="bar-chart-2" class="w-5 h-5 text-blue-400 mr-2"></i>
+                                        Market Insights
+                                    </h4>
+                                    <div class="space-y-3">
+                                        ${result.career_intelligence.market_insights.map(insight => `
+                                            <div class="flex items-start p-3 bg-white/10 rounded-lg border border-blue-500/30">
+                                                <i data-feather="info" class="w-4 h-4 text-blue-400 mr-3 mt-1 flex-shrink-0"></i>
+                                                <div class="text-sm text-gray-300">${insight}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        
+                        // Career Path
+                        if (result.career_intelligence.career_path && result.career_intelligence.career_path.length > 0) {
+                            newHTML += `
+                                <div class="p-6 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl border-2 border-purple-500 shadow-lg">
+                                    <h4 class="font-bold mb-4 text-lg flex items-center text-purple-300">
+                                        <i data-feather="target" class="w-5 h-5 text-purple-400 mr-2"></i>
+                                        Career Path
+                                    </h4>
+                                    <div class="space-y-3">
+                                        ${result.career_intelligence.career_path.map(path => `
+                                            <div class="flex items-start p-3 bg-white/10 rounded-lg border border-purple-500/30">
+                                                <i data-feather="arrow-right" class="w-4 h-4 text-purple-400 mr-3 mt-1 flex-shrink-0"></i>
+                                                <div class="text-sm text-gray-300">${path}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        
+                        // Skill Gaps
+                        if (result.career_intelligence.skill_gaps && result.career_intelligence.skill_gaps.length > 0) {
+                            newHTML += `
+                                <div class="p-6 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl border-2 border-yellow-500 shadow-lg">
+                                    <h4 class="font-bold mb-4 text-lg flex items-center text-yellow-300">
+                                        <i data-feather="alert-triangle" class="w-5 h-5 text-yellow-400 mr-2"></i>
+                                        Skill Gaps
+                                    </h4>
+                                    <div class="space-y-3">
+                                        ${result.career_intelligence.skill_gaps.map(gap => `
+                                            <div class="flex items-start p-3 bg-white/10 rounded-lg border border-yellow-500/30">
+                                                <i data-feather="minus-circle" class="w-4 h-4 text-yellow-400 mr-3 mt-1 flex-shrink-0"></i>
+                                                <div class="text-sm text-gray-300">${gap}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        
+                        // Salary Insights
+                        if (result.career_intelligence.salary_insights && result.career_intelligence.salary_insights.length > 0) {
+                            newHTML += `
+                                <div class="p-6 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-xl border-2 border-emerald-500 shadow-lg">
+                                    <h4 class="font-bold mb-4 text-lg flex items-center text-emerald-300">
+                                        <i data-feather="dollar-sign" class="w-5 h-5 text-emerald-400 mr-2"></i>
+                                        Salary Insights
+                                    </h4>
+                                    <div class="space-y-3">
+                                        ${result.career_intelligence.salary_insights.map(insight => `
+                                            <div class="flex items-start p-3 bg-white/10 rounded-lg border border-emerald-500/30">
+                                                <i data-feather="trending-up" class="w-4 h-4 text-emerald-400 mr-3 mt-1 flex-shrink-0"></i>
+                                                <div class="text-sm text-gray-300">${insight}</div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                        
+                        newHTML += '</div>';
+                        
+                        // Replace the entire section
+                        parentDiv.innerHTML = newHTML;
+                        feather.replace();
+                        
+                        // Add a success indicator
+                        const successDiv = document.createElement('div');
+                        successDiv.style.position = 'fixed';
+                        successDiv.style.top = '20px';
+                        successDiv.style.right = '20px';
+                        successDiv.style.background = 'linear-gradient(45deg, #10b981, #059669)';
+                        successDiv.style.color = 'white';
+                        successDiv.style.padding = '15px 20px';
+                        successDiv.style.borderRadius = '10px';
+                        successDiv.style.fontSize = '16px';
+                        successDiv.style.fontWeight = 'bold';
+                        successDiv.style.zIndex = '10000';
+                        successDiv.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+                        successDiv.innerHTML = '✅ CAREER INTELLIGENCE UPDATED!';
+                        document.body.appendChild(successDiv);
+                        
+                        setTimeout(() => {
+                            if (successDiv.parentNode) {
+                                successDiv.parentNode.removeChild(successDiv);
+                            }
+                        }, 5000);
+                        
+                        console.log('🎯 FINAL SOLUTION completed successfully!');
+                    }
+                } else {
+                    console.log('❌ Could not find career intelligence section');
+                }
+            }
+            
+            // Update upload area
+            uploadArea.innerHTML = `
+                <div class="floating mb-6">
+                    <i data-feather="check-circle" class="w-20 h-20 text-green-500 mx-auto"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-green-500">Analysis Complete!</h3>
+                <p class="text-gray-400 mb-6">Your resume has been analyzed with real AI</p>
+                <button onclick="resetUpload()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
+                    Analyze Another Resume
+                </button>
+            `;
+            feather.replace();
+            
+            // Animate results in
+            gsap.fromTo(analysisResults, 
+                { opacity: 0, y: 50 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+            );
+        }
+
+        function showAnalysisResults() {
+            analysisResults.classList.remove('hidden');
+            uploadArea.innerHTML = `
+                <div class="floating mb-6">
+                    <i data-feather="check-circle" class="w-20 h-20 text-green-500 mx-auto"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4 text-green-500">Analysis Complete!</h3>
+                <p class="text-gray-400 mb-6">Your resume has been analyzed with advanced AI</p>
+                <button onclick="resetUpload()" class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
+                    Analyze Another Resume
+                </button>
+            `;
+            feather.replace();
+            
+            // Animate results in
+            gsap.fromTo(analysisResults, 
+                { opacity: 0, y: 50 },
+                { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+            );
+        }
+
+        function resetUpload() {
+            analysisResults.classList.add('hidden');
+            uploadArea.innerHTML = `
+                <div class="floating mb-6">
+                    <i data-feather="upload-cloud" class="w-20 h-20 text-indigo-400 mx-auto"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Upload Your Resume</h3>
+                <p class="text-gray-400 mb-6 text-lg">Drag and drop your resume here or click to browse</p>
+                <p class="text-sm text-gray-500">Supports PDF, DOCX, and TXT files (max 10MB)</p>
+                <input type="file" id="fileInput" accept=".pdf,.docx,.txt" class="hidden">
+            `;
+            feather.replace();
+        }
+
+        function updateCareerIntelligence(careerIntelligence) {
+            console.log('🎯 SIMPLE WORKING - Updating career intelligence with:', careerIntelligence);
+            
+            if (!careerIntelligence) {
+                console.log('❌ No career intelligence data');
+                return;
+            }
+            
+            const grid = document.getElementById('careerIntelligenceGrid');
+            if (!grid) {
+                console.log('❌ Career intelligence grid not found');
+                return;
+            }
+            
+            let html = '';
+            
+            // Experience Level
+            if (careerIntelligence.experience_level) {
+                html += `
+                    <div class="p-6 bg-white/10 rounded-xl border border-indigo-500/30">
+                        <h4 class="font-bold mb-4 text-lg text-indigo-300">⏰ Experience Level</h4>
+                        <div class="text-4xl font-bold text-indigo-300 mb-2">${careerIntelligence.experience_level}</div>
+                        <div class="text-gray-400 text-sm">Based on your resume analysis</div>
+                    </div>
+                `;
+            }
+            
+            // Industry Trends
+            if (careerIntelligence.industry_trends && careerIntelligence.industry_trends.length > 0) {
+                html += `
+                    <div class="p-6 bg-white/10 rounded-xl border border-green-500/30">
+                        <h4 class="font-bold mb-4 text-lg text-green-300">📈 Industry Trends</h4>
+                        <div class="space-y-3">
+                            ${careerIntelligence.industry_trends.map(trend => `
+                                <div class="flex items-start p-3 bg-white/10 rounded-lg">
+                                    <div class="text-sm text-gray-300">📊 ${trend}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Market Insights
+            if (careerIntelligence.market_insights && careerIntelligence.market_insights.length > 0) {
+                html += `
+                    <div class="p-6 bg-white/10 rounded-xl border border-blue-500/30">
+                        <h4 class="font-bold mb-4 text-lg text-blue-300">📊 Market Insights</h4>
+                        <div class="space-y-3">
+                            ${careerIntelligence.market_insights.map(insight => `
+                                <div class="flex items-start p-3 bg-white/10 rounded-lg">
+                                    <div class="text-sm text-gray-300">💡 ${insight}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Career Path
+            if (careerIntelligence.career_path && careerIntelligence.career_path.length > 0) {
+                html += `
+                    <div class="p-6 bg-white/10 rounded-xl border border-purple-500/30">
+                        <h4 class="font-bold mb-4 text-lg text-purple-300">🎯 Career Path</h4>
+                        <div class="space-y-3">
+                            ${careerIntelligence.career_path.map(path => `
+                                <div class="flex items-start p-3 bg-white/10 rounded-lg">
+                                    <div class="text-sm text-gray-300">🚀 ${path}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Skill Gaps
+            if (careerIntelligence.skill_gaps && careerIntelligence.skill_gaps.length > 0) {
+                html += `
+                    <div class="p-6 bg-white/10 rounded-xl border border-yellow-500/30">
+                        <h4 class="font-bold mb-4 text-lg text-yellow-300">⚠️ Skill Gaps</h4>
+                        <div class="space-y-3">
+                            ${careerIntelligence.skill_gaps.map(gap => `
+                                <div class="flex items-start p-3 bg-white/10 rounded-lg">
+                                    <div class="text-sm text-gray-300">❌ ${gap}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Salary Insights
+            if (careerIntelligence.salary_insights && careerIntelligence.salary_insights.length > 0) {
+                html += `
+                    <div class="p-6 bg-white/10 rounded-xl border border-emerald-500/30">
+                        <h4 class="font-bold mb-4 text-lg text-emerald-300">💰 Salary Insights</h4>
+                        <div class="space-y-3">
+                            ${careerIntelligence.salary_insights.map(insight => `
+                                <div class="flex items-start p-3 bg-white/10 rounded-lg">
+                                    <div class="text-sm text-gray-300">💵 ${insight}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            grid.innerHTML = html;
+            console.log('✅ Career intelligence updated successfully!');
+            
+            // Show success notification
+            showNotification('✅ Career Intelligence Updated Successfully!', 'success');
+        }
+
+        function updateDynamicCareerPath(careerIntelligence) {
+            console.log('🚀 updateDynamicCareerPath called with:', careerIntelligence);
+            
+            const careerPathSection = document.getElementById('dynamicCareerPath');
+            if (!careerPathSection) {
+                console.log('❌ dynamicCareerPath element not found!');
+                return;
+            }
+            
+            console.log('✅ dynamicCareerPath element found!');
+            
+            if (!careerIntelligence || !careerIntelligence.career_path || careerIntelligence.career_path.length === 0) {
+                console.log('❌ No career path data available');
+                return;
+            }
+            
+            // Create dynamic career path content
+            const careerPathItems = careerIntelligence.career_path.slice(0, 3); // Take first 3 items
+            const icons = ['target', 'trending-up', 'award'];
+            const titles = ['Short Term', 'Medium Term', 'Long Term'];
+            
+            let careerPathHTML = '<div class="grid md:grid-cols-3 gap-6">';
+            
+            careerPathItems.forEach((path, index) => {
+                careerPathHTML += `
+                    <div class="text-center p-6 bg-white/5 rounded-xl card-hover flex flex-col items-center justify-center min-h-[200px]">
+                        <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-feather="${icons[index] || 'arrow-right'}" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <div class="text-2xl font-bold gradient-text mb-2 text-center">${titles[index] || 'Career Step'}</div>
+                        <p class="text-gray-400 text-center leading-relaxed">${path}</p>
+                    </div>
+                `;
+            });
+            
+            careerPathHTML += '</div>';
+            
+            // Update the content
+            const contentDiv = careerPathSection.querySelector('div');
+            if (contentDiv) {
+                contentDiv.innerHTML = careerPathHTML;
+                console.log('✅ Dynamic career path updated successfully!');
+            }
+            
+            // Update icons
+            feather.replace();
+            
+            // Automatically show insights section after analysis
+            setTimeout(() => {
+                showSection('insights');
+            }, 1000);
+        }
+
+        // Charts
+        function initCharts() {
+            // Skills Chart
+            const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+            new Chart(skillsCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['JavaScript', 'React', 'Node.js', 'Python', 'AWS', 'Docker', 'ML/AI', 'DevOps'],
+                    datasets: [{
+                        label: 'Your Skills',
+                        data: [85, 80, 75, 60, 70, 65, 55, 70],
+                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(102, 126, 234, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: 'rgba(255, 255, 255, 0.8)',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.5)',
+                                backdropColor: 'transparent'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.8)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Trends Chart
+            const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+            new Chart(trendsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2020', '2021', '2022', '2023', '2024'],
+                    datasets: [{
+                        label: 'Demand for Your Skills',
+                        data: [65, 70, 75, 80, 85],
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.5)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.5)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'rgba(255, 255, 255, 0.8)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.background = type === 'success' ? 'linear-gradient(45deg, #10b981, #059669)' : 'linear-gradient(45deg, #3b82f6, #1d4ed8)';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 20px';
+            notification.style.borderRadius = '10px';
+            notification.style.fontSize = '16px';
+            notification.style.fontWeight = 'bold';
+            notification.style.zIndex = '10000';
+            notification.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+            notification.innerHTML = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+
+        // Role Recommendations Function
+        function getRoleRecommendations() {
+            const selectedRole = document.getElementById('roleSelect').value;
+            const experienceLevel = document.querySelector('input[name="experience"]:checked')?.value;
+            
+            if (!selectedRole) {
+                showNotification('Please select a role first!', 'error');
+                return;
+            }
+            
+            if (!experienceLevel) {
+                showNotification('Please select your experience level!', 'error');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('recommendationsResults').classList.remove('hidden');
+            document.getElementById('recommendationsContent').innerHTML = `
+                <div class="col-span-3 text-center">
+                    <i data-feather="loader" class="w-12 h-12 text-indigo-400 mx-auto mb-4 animate-spin"></i>
+                    <p class="text-gray-400">Generating personalized recommendations...</p>
+                </div>
+            `;
+            
+            // Role-specific recommendations
+            const recommendations = {
+                'software-engineer': {
+                    skills: ['JavaScript', 'Python', 'React', 'Node.js', 'Database Design'],
+                    salary: experienceLevel === 'entry' ? '₹4,50,000 - ₹7,00,000' : experienceLevel === 'mid' ? '₹7,00,000 - ₹12,00,000' : '₹12,00,000 - ₹22,00,000',
+                    companies: ['Google', 'Microsoft', 'Amazon', 'Meta', 'Netflix'],
+                    nextSteps: ['Build a portfolio', 'Contribute to open source', 'Learn cloud platforms']
+                },
+                'data-scientist': {
+                    skills: ['Python', 'R', 'SQL', 'Machine Learning', 'Statistics'],
+                    salary: experienceLevel === 'entry' ? '₹5,50,000 - ₹8,00,000' : experienceLevel === 'mid' ? '₹8,00,000 - ₹14,00,000' : '₹14,00,000 - ₹26,00,000',
+                    companies: ['Netflix', 'Uber', 'Airbnb', 'Spotify', 'LinkedIn'],
+                    nextSteps: ['Complete ML projects', 'Learn deep learning', 'Practice with real datasets']
+                },
+                'product-manager': {
+                    skills: ['Product Strategy', 'User Research', 'Data Analysis', 'Agile', 'Leadership'],
+                    salary: experienceLevel === 'entry' ? '₹5,00,000 - ₹7,50,000' : experienceLevel === 'mid' ? '₹7,50,000 - ₹13,00,000' : '₹13,00,000 - ₹24,00,000',
+                    companies: ['Apple', 'Google', 'Facebook', 'Amazon', 'Uber'],
+                    nextSteps: ['Build product sense', 'Learn user research', 'Practice prioritization']
+                },
+                'devops-engineer': {
+                    skills: ['Linux', 'AWS', 'Docker', 'Kubernetes', 'CI/CD'],
+                    salary: experienceLevel === 'entry' ? '₹5,00,000 - ₹8,00,000' : experienceLevel === 'mid' ? '₹8,00,000 - ₹14,00,000' : '₹14,00,000 - ₹24,00,000',
+                    companies: ['AWS', 'Google Cloud', 'Microsoft', 'Atlassian', 'HashiCorp'],
+                    nextSteps: ['Automate deployments', 'Master containers', 'Improve monitoring']
+                },
+                'ui-ux-designer': {
+                    skills: ['Figma', 'Wireframing', 'Prototyping', 'User Research', 'Design Systems'],
+                    salary: experienceLevel === 'entry' ? '₹4,00,000 - ₹7,00,000' : experienceLevel === 'mid' ? '₹7,00,000 - ₹12,00,000' : '₹12,00,000 - ₹20,00,000',
+                    companies: ['Adobe', 'Canva', 'Airbnb', 'Spotify', 'Swiggy'],
+                    nextSteps: ['Build case studies', 'Run usability tests', 'Contribute to a design system']
+                },
+                'project-manager': {
+                    skills: ['Agile', 'Scrum', 'Stakeholder Management', 'Risk Management', 'Planning'],
+                    salary: experienceLevel === 'entry' ? '₹5,00,000 - ₹8,00,000' : experienceLevel === 'mid' ? '₹8,00,000 - ₹14,00,000' : '₹14,00,000 - ₹24,00,000',
+                    companies: ['TCS', 'Infosys', 'Accenture', 'Wipro', 'Capgemini'],
+                    nextSteps: ['Get PMP/CSM', 'Improve communication', 'Own cross-team delivery']
+                },
+                'business-analyst': {
+                    skills: ['SQL', 'Excel', 'Power BI', 'Requirements', 'Stakeholder Communication'],
+                    salary: experienceLevel === 'entry' ? '₹4,50,000 - ₹7,50,000' : experienceLevel === 'mid' ? '₹7,50,000 - ₹12,50,000' : '₹12,50,000 - ₹20,00,000',
+                    companies: ['Deloitte', 'EY', 'KPMG', 'PwC', 'ZS'],
+                    nextSteps: ['Build dashboards', 'Write clear BRDs', 'Practice data storytelling']
+                },
+                'marketing-manager': {
+                    skills: ['SEO', 'Content', 'Performance Marketing', 'Analytics', 'Branding'],
+                    salary: experienceLevel === 'entry' ? '₹4,00,000 - ₹7,00,000' : experienceLevel === 'mid' ? '₹7,00,000 - ₹12,00,000' : '₹12,00,000 - ₹20,00,000',
+                    companies: ['Unilever', 'Procter & Gamble', 'Zomato', 'Cred', 'Byju\'s'],
+                    nextSteps: ['Run campaigns', 'Measure CAC/LTV', 'Build a content plan']
+                },
+                'sales-representative': {
+                    skills: ['Prospecting', 'CRM', 'Negotiation', 'Pitching', 'Pipeline Management'],
+                    salary: experienceLevel === 'entry' ? '₹3,00,000 - ₹6,00,000' : experienceLevel === 'mid' ? '₹6,00,000 - ₹10,00,000' : '₹10,00,000 - ₹16,00,000',
+                    companies: ['Freshworks', 'Salesforce', 'Zoho', 'Tata', 'Reliance'],
+                    nextSteps: ['Build a pipeline', 'Refine pitch', 'Improve follow-ups']
+                },
+                'hr-specialist': {
+                    skills: ['Recruitment', 'Onboarding', 'Payroll', 'Employee Relations', 'Compliance'],
+                    salary: experienceLevel === 'entry' ? '₹3,50,000 - ₹6,50,000' : experienceLevel === 'mid' ? '₹6,50,000 - ₹10,50,000' : '₹10,50,000 - ₹16,00,000',
+                    companies: ['Infosys', 'TCS', 'Wipro', 'Accenture', 'HCL'],
+                    nextSteps: ['Streamline hiring', 'Enhance onboarding', 'Track HR metrics']
+                }
+            };
+            
+            const roleData = recommendations[selectedRole] || {
+                skills: ['Communication', 'Problem Solving', 'Leadership'],
+                salary: '₹6,00,000 - ₹12,00,000',
+                companies: ['Various Companies'],
+                nextSteps: ['Build relevant skills', 'Network', 'Apply strategically']
+            };
+            
+            // Update role info
+            document.getElementById('roleInfo').innerHTML = `
+                <div class="p-4 bg-white/5 rounded-xl">
+                    <h4 class="font-bold text-indigo-400 mb-2">Average Income</h4>
+                    <p class="text-gray-300">${roleData.salary}</p>
+                </div>
+                <div class="p-4 bg-white/5 rounded-xl">
+                    <h4 class="font-bold text-purple-400 mb-2">Required Skills</h4>
+                    <p class="text-gray-300">${roleData.skills.join(', ')}</p>
+                </div>
+                <div class="p-4 bg-white/5 rounded-xl">
+                    <h4 class="font-bold text-pink-400 mb-2">Top Companies</h4>
+                    <p class="text-gray-300">${roleData.companies.join(', ')}</p>
+                </div>
+            `;
+            
+            // Show recommendations after a short delay
+            setTimeout(() => {
+                document.getElementById('recommendationsContent').innerHTML = `
+                    <div class="text-center p-6 bg-white/5 rounded-xl card-hover">
+                        <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-feather="target" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-bold gradient-text mb-2">Skills to Focus On</h4>
+                        <p class="text-gray-400">${roleData.skills.slice(0, 3).join(', ')}</p>
+                    </div>
+                    
+                    <div class="text-center p-6 bg-white/5 rounded-xl card-hover">
+                        <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-feather="trending-up" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-bold gradient-text mb-2">Salary Range</h4>
+                        <p class="text-gray-400">${roleData.salary}</p>
+                    </div>
+                    
+                    <div class="text-center p-6 bg-white/5 rounded-xl card-hover">
+                        <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i data-feather="award" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h4 class="text-xl font-bold gradient-text mb-2">Next Steps</h4>
+                        <p class="text-gray-400">${roleData.nextSteps[0]}</p>
+                    </div>
+                `;
+                
+                feather.replace();
+                showNotification('Recommendations generated successfully!', 'success');
+            }, 2000);
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize charts after a delay
+            setTimeout(initCharts, 1000);
+            
+            // Add scroll animations
+            gsap.registerPlugin(ScrollTrigger);
+            
+            // Animate elements on scroll
+            gsap.utils.toArray('.card-hover').forEach(card => {
+                gsap.fromTo(card, 
+                    { opacity: 0, y: 50 },
+                    { 
+                        opacity: 1, 
+                        y: 0, 
+                        duration: 0.8, 
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: card,
+                            start: "top 80%",
+                            end: "bottom 20%",
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+        });
+    </script>
+</body>
+</html> 

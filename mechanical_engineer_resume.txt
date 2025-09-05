@@ -1,0 +1,60 @@
+SARAH JOHNSON
+Mechanical Engineer
+sarah.johnson@email.com | (555) 987-6543 | linkedin.com/in/sarahjohnson
+
+PROFESSIONAL SUMMARY
+Dedicated Mechanical Engineer with 3+ years of experience in product design, manufacturing processes, and CAD modeling. Skilled in SolidWorks, FEA analysis, and project management with a focus on automotive and aerospace applications.
+
+TECHNICAL SKILLS
+CAD Software: SolidWorks, AutoCAD, CATIA, Fusion 360
+Analysis Tools: ANSYS, MATLAB, Simulink, FEA/CFD
+Manufacturing: CNC machining, 3D printing, injection molding
+Materials: Metals, plastics, composites, heat treatment
+Standards: ISO, ASME, ASTM, GD&T
+Project Management: MS Project, Agile methodologies
+
+PROFESSIONAL EXPERIENCE
+
+Mechanical Design Engineer | AutoTech Manufacturing | 2021 - Present
+• Designed automotive components using SolidWorks and conducted FEA analysis
+• Reduced production costs by 25% through design optimization
+• Led cross-functional team of 5 engineers on new product development
+• Technologies: SolidWorks, ANSYS, CNC machining, GD&T
+
+Product Engineer | Aerospace Solutions | 2020 - 2021
+• Developed aircraft components meeting strict aerospace standards
+• Performed stress analysis and fatigue testing on critical parts
+• Collaborated with suppliers to ensure quality and cost-effectiveness
+• Technologies: CATIA, ANSYS, composite materials, ISO standards
+
+Junior Engineer | Industrial Systems | 2019 - 2020
+• Assisted in design and testing of industrial machinery
+• Created technical drawings and assembly instructions
+• Participated in quality control and process improvement
+• Technologies: AutoCAD, SolidWorks, manufacturing processes
+
+PROJECTS
+Electric Vehicle Battery Housing | SolidWorks, ANSYS
+• Designed lightweight battery enclosure for electric vehicles
+• Conducted thermal analysis and structural optimization
+• Reduced weight by 30% while maintaining safety standards
+
+Aircraft Landing Gear Component | CATIA, FEA
+• Developed landing gear component for commercial aircraft
+• Performed fatigue analysis and stress testing
+• Ensured compliance with FAA regulations
+
+EDUCATION
+Bachelor of Science in Mechanical Engineering
+Engineering University | 2015 - 2019
+GPA: 3.7/4.0
+
+CERTIFICATIONS
+• SolidWorks Certified Professional
+• ANSYS Certified User
+• Six Sigma Green Belt
+
+ACHIEVEMENTS
+• Best Design Award at AutoTech Manufacturing 2023
+• Led successful cost reduction initiative saving $500K annually
+• Published research paper on composite materials in engineering journal 
